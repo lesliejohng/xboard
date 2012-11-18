@@ -447,12 +447,10 @@ fi])
 AC_DEFINE_UNQUOTED(USE_PTYS, $USE_PTYS)
 
 
-dnl | define not to build zippy as a default, so that autoheader is happy
-AC_DEFINE(ZIPPY, 0,[should zippy be enabled])
 AC_ARG_ENABLE( [zippy],
 	       [AS_HELP_STRING([--enable-zippy],[support interfacing a chess program to ICS (default)])],
 	       [],
-	       [enable_zippy="yes"])
+	       [enable_zippy="no"])
 
 if test x"$enable_zippy" != xno; then
   AC_DEFINE(ZIPPY, 1,[should zippy be enabled])

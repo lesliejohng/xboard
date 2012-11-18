@@ -666,7 +666,7 @@ ArgDescriptor argDescriptors[] = {
   { "dialogColor", ArgString, (void *) &appData.dialogColor, XBOARD, (ArgIniType) "" },
   { "buttonColor", ArgString, (void *) &appData.buttonColor, XBOARD, (ArgIniType) "" },
 
-#if ZIPPY
+#ifdef ZIPPY
   { "zippyTalk", ArgBoolean, (void *) &appData.zippyTalk, FALSE, (ArgIniType) ZIPPY_TALK },
   { "zt", ArgTrue, (void *) &appData.zippyTalk, FALSE, INVALID },
   { "xzt", ArgFalse, (void *) &appData.zippyTalk, FALSE, INVALID },

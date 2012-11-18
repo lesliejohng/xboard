@@ -624,7 +624,7 @@ typedef struct {
     int ruleMoves;
     int drawRepeats;
 
-#if ZIPPY
+#ifdef ZIPPY
     char *zippyLines;
     char *zippyPinhead;
     char *zippyPassword;

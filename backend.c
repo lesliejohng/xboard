@@ -125,7 +125,7 @@ extern int gettimeofday(struct timeval *, struct timezone *);
 #include "backend.h"
 #include "parser.h"
 #include "moves.h"
-#if ZIPPY
+#ifdef ZIPPY
 # include "zippy.h"
 #endif
 #include "backendz.h"
@@ -1025,7 +1025,7 @@ InitBackEnd1 ()
     if (appData.icsActive) {
 	appData.matchMode = FALSE;
 	appData.matchGames = 0;
-#if ZIPPY
+#ifdef ZIPPY
 	appData.noChessProgram = !appData.zippyPlay;
 #else
 	appData.zippyPlay = FALSE;
@@ -1074,7 +1074,7 @@ InitBackEnd1 ()
 	first.sendTime = second.sendTime = 0;
     }
 
-#if ZIPPY
+#ifdef ZIPPY
     /* Override some settings from environment variables, for backward
        compatibility.  Unfortunately it's not feasible to have the env
        vars just set defaults, at least in xboard.  Ugh.
@@ -3237,7 +3237,7 @@ read_from_ics (InputSourceRef isr, VOIDSTAR closure, char *data, int count, int 
           backup = i;
 	    if (appData.zippyTalk || appData.zippyPlay) {
                 /* [DM] Backup address for color zippy lines */
-#if ZIPPY
+#ifdef ZIPPY
                if (loggedOn == TRUE)
                        if (ZippyControl(buf, &backup) || ZippyConverse(buf, &backup) ||
                           (appData.zippyPlay && ZippyMatch(buf, &backup)));
@@ -3600,7 +3600,7 @@ read_from_ics (InputSourceRef isr, VOIDSTAR closure, char *data, int count, int 
 		    memcpy(&parse[parse_pos], &buf[oldi], i - oldi);
 		    parse[parse_pos + i - oldi] = NULLCHAR;
 		    ParseGameHistory(parse);
-#if ZIPPY
+#ifdef ZIPPY
 		    if (appData.zippyPlay && first.initDone) {
 		        FeedMovesToProgram(&first, forwardMostMove);
 			if (gameMode == IcsPlayingWhite) {
@@ -3892,7 +3892,7 @@ read_from_ics (InputSourceRef isr, VOIDSTAR closure, char *data, int count, int 
 		    safeStrCpy(gs_kind, strchr(why, ' ') + 1,sizeof(gs_kind)/sizeof(gs_kind[0]));
 		    if(ics_gamenum == -1) // [HGM] only if we are not already involved in a game (because gin=1 sends us such messages)
 		    VariantSwitch(boards[currentMove], StringToVariant(gs_kind)); // [HGM] variantswitch: even before we get first board
-#if ZIPPY
+#ifdef ZIPPY
 		    if (appData.zippyPlay) {
 			ZippyGameStart(whitename, blackname);
 		    }
@@ -3923,7 +3923,7 @@ read_from_ics (InputSourceRef isr, VOIDSTAR closure, char *data, int count, int 
 		    break;
 		}
 		GameEnds(endtype, why, GE_ICS);
-#if ZIPPY
+#ifdef ZIPPY
 		if (appData.zippyPlay && first.initDone) {
 		    ZippyGameEnd(endtype, why);
 		    if (first.pr == NoProc) {
@@ -4068,7 +4068,7 @@ read_from_ics (InputSourceRef isr, VOIDSTAR closure, char *data, int count, int 
                         CopyHoldings(boards[forwardMostMove], white_holding, WhitePawn);
                         CopyHoldings(boards[forwardMostMove], black_holding, BlackPawn);
                         boards[forwardMostMove][HOLDINGS_SET] = 1; // flag holdings as set
-#if ZIPPY
+#ifdef ZIPPY
 			if (appData.zippyPlay && first.initDone) {
 			    ZippyHoldings(white_holding, black_holding,
 					  new_piece);
@@ -4588,7 +4588,7 @@ ParseBoard12 (char *string)
 	}
     } else if (moveNum == forwardMostMove + 1 || moveNum == forwardMostMove
 	       || (moveNum < forwardMostMove && moveNum >= backwardMostMove)) {
-#if ZIPPY
+#ifdef ZIPPY
 	/* [DM] If we found takebacks during icsEngineAnalyze try send to engine */
 	/* [HGM] applied this also to an engine that is silently watching        */
 	if (appData.zippyPlay && moveNum < forwardMostMove && first.initDone &&
@@ -4613,7 +4613,7 @@ ParseBoard12 (char *string)
 	    return;
 	}
 	if (gameMode == IcsExamining && moveNum > 0 && appData.getMoveList) {
-#if ZIPPY
+#ifdef ZIPPY
 	    if(appData.zippyPlay && forwardMostMove > 0 && first.initDone) {
 		// [HGM] when we will receive the move list we now request, it will be
 		// fed to the engine from the first move on. So if the engine is not
@@ -4640,7 +4640,7 @@ ParseBoard12 (char *string)
     }
 
 
-#if ZIPPY
+#ifdef ZIPPY
     if (appData.zippyPlay && newGame &&
 	gameMode != IcsObserving && gameMode != IcsIdle &&
 	gameMode != IcsExamining)
@@ -4759,7 +4759,7 @@ ParseBoard12 (char *string)
     setbuf(debugFP, NULL);
   }
 
-#if ZIPPY
+#ifdef ZIPPY
 	/* Send move to chess program (BEFORE animating it). */
 	if (appData.zippyPlay && !newGame && newMove &&
 	   (!appData.getMoveList || backwardMostMove == 0) && first.initDone) {
@@ -4879,7 +4879,7 @@ ParseBoard12 (char *string)
     }
 
     HistorySet(parseList, backwardMostMove, forwardMostMove, currentMove-1);
-#if ZIPPY
+#ifdef ZIPPY
     if(bookHit) { // [HGM] book: simulate book reply
 	static char bookMove[MSG_SIZ]; // a bit generous?
 
@@ -5001,7 +5001,7 @@ SendMoveToProgram (int moveNum, ChessProgramState *cps)
     /*       Send 'go' if we are in a mode where machine should play. */
     if( (moveNum == 0 && setboardSpoiledMachineBlack && cps == &first) &&
         (gameMode == TwoMachinesPlay   ||
-#if ZIPPY
+#ifdef ZIPPY
          gameMode == IcsPlayingBlack     || gameMode == IcsPlayingWhite ||
 #endif
          gameMode == MachinePlaysBlack || gameMode == MachinePlaysWhite) ) {
@@ -8246,7 +8246,7 @@ FakeBookMove: // [HGM] book: we jump here to simulate machine moves after book h
 	    return; // [HGM] adjudicate: for all automatic game ends
 	}
 
-#if ZIPPY
+#ifdef ZIPPY
 	if ((gameMode == IcsPlayingWhite || gameMode == IcsPlayingBlack) &&
 	    first.initDone) {
 	  if(cps->offeredDraw && (signed char)boards[forwardMostMove][EP_STATUS] <= EP_DRAWS) {
@@ -8793,7 +8793,7 @@ if(appData.debugMode) fprintf(debugFP, "nodes = %d, %lld\n", (int) programStats.
 	return;
     } else if (strstr(message, "offer") != NULL &&
 	       strstr(message, "draw") != NULL) {
-#if ZIPPY
+#ifdef ZIPPY
 	if (appData.zippyPlay && first.initDone) {
 	    /* Relay offer to ICS */
 	    SendToICS(ics_prefix);
@@ -10491,7 +10491,7 @@ GameEnds (ChessMove result, char *resultDetails, int whosays)
 	   game is over, but the engine can offer to draw, claim
 	   a draw, or resign.
 	 */
-#if ZIPPY
+#ifdef ZIPPY
 	if (appData.zippyPlay && first.initDone) {
 	    if (result == GameIsDrawn) {
 		/* In case draw still needs to be claimed */

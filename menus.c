@@ -354,7 +354,7 @@ void
 AboutProc ()
 {
     char buf[2 * MSG_SIZ];
-#if ZIPPY
+#ifdef ZIPPY
     char *zippy = _(" (with Zippy code)");
 #else
     char *zippy = "";
@@ -1021,7 +1021,7 @@ SetICSMode ()
 {
   SetMenuEnables(icsEnables);
 
-#if ZIPPY
+#ifdef ZIPPY
   if (appData.zippyPlay && !appData.noChessProgram) { /* [DM] icsEngineAnalyze */
      EnableNamedMenuItem("Mode.AnalysisMode", True);
      EnableNamedMenuItem("Engine.Engine#1Settings", True);
