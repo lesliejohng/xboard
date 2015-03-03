@@ -34,6 +34,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+
+#include "config.h"
 #include "common.h"
 #include "frontend.h"
 #include "backend.h"

@@ -52,6 +52,9 @@
  ** See the file ChangeLog for a revision history.  */
 
 /* [AS] Also useful here for debugging */
+
+#define strcasecmp _stricmp
+
 #ifdef WIN32
 #include <windows.h>
 
